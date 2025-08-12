@@ -1,0 +1,15 @@
+{
+  "architecture": {
+    "input": 5,
+    "hidden": 8,
+    "output": 3
+  },
+  "weights": {
+    "ih": [],
+    "ho": [],
+    "bh": [],
+    "bo": []
+  },
+  "_comment": "The weight arrays below will be populated by a script. See experts_net.json for instructions on how to generate random weights for testing.",
+  "_script": "const arch = modelJson.architecture; modelJson.weights.ih = Array.from({ length: arch.hidden * arch.input }, () => Math.random() * 2 - 1); modelJson.weights.ho = Array.from({ length: arch.output * arch.hidden }, () => Math.random() * 2 - 1); modelJson.weights.bh = Array.from({ length: arch.hidden }, () => Math.random() * 2 - 1); modelJson.weights.bo = Array.from({ length: arch.output }, () => Math.random() * 2 - 1); console.log(JSON.stringify(modelJson));"
+}

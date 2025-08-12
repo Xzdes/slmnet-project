@@ -1,0 +1,61 @@
+{
+  "name": "Full_Review_Analysis_Pipeline_v1",
+  "input_field": "raw_text",
+  "pipeline": [
+    {
+      "id": "word_vector",
+      "type": "tokenizer",
+      "input": "raw_text",
+      "vocab_url": "./models/main_vocab.json",
+      "output_size": 500
+    },
+    {
+      "id": "l1_report",
+      "type": "neural_model",
+      "input": "word_vector",
+      "model_url": "./models/experts_net.json",
+      "outputs": {
+        "topic": ["price", "quality", "delivery", "other"]
+      }
+    },
+    {
+      "id": "l2_satisfaction",
+      "type": "logic_gate",
+      "input": "l1_report.sentiment",
+      "rules": {
+        "happy": "> 0.7",
+        "unhappy": "< 0.3",
+        "neutral": "default"
+      }
+    },
+    {
+      "id": "l2_security",
+      "type": "logic_gate",
+      "input": "l1_report.spam",
+      "rules": {
+        "threat": "> 0.8",
+        "safe": "default"
+      }
+    },
+    {
+      "id": "final_input_vector",
+      "type": "vector_builder",
+      "inputs": [
+        { "source": "l2_satisfaction", "categories": ["happy", "unhappy", "neutral"] },
+        { "source": "l2_security", "categories": ["safe", "threat"] }
+      ]
+    },
+    {
+      "id": "l3_prediction",
+      "type": "neural_model",
+      "input": "final_input_vector",
+      "model_url": "./models/director_net.json"
+    },
+    {
+      "id": "final_verdict",
+      "type": "decoder",
+      "input": "l3_prediction",
+      "categories": ["priority_complaint", "positive_feedback", "spam_to_delete"]
+    }
+  ]
+}
