@@ -15,7 +15,9 @@
       "input": "word_vector",
       "model_url": "./models/experts_net.json",
       "outputs": {
-        "topic": ["price", "quality", "delivery", "other"]
+        "topic": ["price", "quality", "delivery", "other"],
+        "sentiment": "scalar",
+        "spam": "scalar"
       }
     },
     {

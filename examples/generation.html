@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>slmnet — Generation Demo</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { background: #1e293b; padding: 40px; border-radius: 16px; max-width: 700px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.4); }
+        h1 { text-align: center; font-size: 24px; margin-bottom: 8px; color: #f8fafc; }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        input[type="text"], input[type="number"] { width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px; color: #e2e8f0; font-size: 14px; }
+        input:focus { outline: none; border-color: #3b82f6; }
+        .prompt-row { margin-bottom: 16px; }
+        .prompt-row input { font-size: 16px; padding: 14px; }
+        button { width: 100%; background: #10b981; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #059669; }
+        button:disabled { background: #475569; cursor: not-allowed; }
+        .output { margin-top: 24px; display: none; }
+        .output-text { background: #0f172a; border-radius: 8px; padding: 20px; font-size: 16px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; min-height: 100px; }
+        .output-text .prompt { color: #3b82f6; font-weight: 600; }
+        .output-text .generated { color: #e2e8f0; }
+        .info { text-align: center; color: #64748b; font-size: 13px; margin-top: 16px; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; background: #1e3a5f; color: #60a5fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>slmnet.js</h1>
+        <p class="subtitle">Text Generation Demo <span class="badge">v1.0</span></p>
+
+        <div class="prompt-row">
+            <label>Prompt</label>
+            <input type="text" id="prompt" value="Once upon a time" placeholder="Enter a prompt...">
+        </div>
+
+        <div class="controls">
+            <div>
+                <label>Max Tokens</label>
+                <input type="number" id="maxTokens" value="100" min="10" max="500">
+            </div>
+            <div>
+                <label>Temperature</label>
+                <input type="number" id="temperature" value="0.8" min="0.1" max="2.0" step="0.1">
+            </div>
+            <div>
+                <label>Top-K</label>
+                <input type="number" id="topK" value="10" min="0" max="100">
+            </div>
+            <div>
+                <label>Top-P</label>
+                <input type="number" id="topP" value="0.95" min="0.1" max="1.0" step="0.05">
+            </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label>Model URL (.slmnet)</label>
+            <input type="text" id="modelUrl" value="./model.slmnet" placeholder="Path to .slmnet model file">
+        </div>
+
+        <button id="generateBtn">Generate</button>
+
+        <div class="output" id="output">
+            <div class="output-text" id="outputText"></div>
+            <p class="info" id="timing"></p>
+        </div>
+    </div>
+
+    <script src="../dist/slmnet.js"></script>
+    <script>
+        const { Model } = window.slmnet;
+
+        const btn = document.getElementById('generateBtn');
+        const promptInput = document.getElementById('prompt');
+        const modelUrlInput = document.getElementById('modelUrl');
+        const outputDiv = document.getElementById('output');
+        const outputText = document.getElementById('outputText');
+        const timing = document.getElementById('timing');
+
+        let cachedModel = null;
+        let cachedModelUrl = null;
+
+        btn.addEventListener('click', async () => {
+            const prompt = promptInput.value;
+            const modelUrl = modelUrlInput.value;
+            if (!prompt || !modelUrl) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Loading model...';
+
+            try {
+                // Load model (cache it)
+                if (modelUrl !== cachedModelUrl) {
+                    cachedModel = await Model.load(modelUrl);
+                    cachedModelUrl = modelUrl;
+                }
+
+                btn.textContent = 'Generating...';
+                const options = {
+                    maxTokens: parseInt(document.getElementById('maxTokens').value),
+                    temperature: parseFloat(document.getElementById('temperature').value),
+                    topK: parseInt(document.getElementById('topK').value),
+                    topP: parseFloat(document.getElementById('topP').value),
+                };
+
+                const start = performance.now();
+                const result = cachedModel.generate(prompt, options);
+                const elapsed = performance.now() - start;
+
+                outputDiv.style.display = 'block';
+                outputText.innerHTML =
+                    `<span class="prompt">${prompt}</span><span class="generated">${result.slice(prompt.length)}</span>`;
+                timing.textContent =
+                    `Generated ${options.maxTokens} tokens in ${(elapsed / 1000).toFixed(2)}s (${(options.maxTokens / (elapsed / 1000)).toFixed(1)} tokens/sec)`;
+
+            } catch (err) {
+                outputDiv.style.display = 'block';
+                outputText.textContent = `Error: ${err.message}`;
+                timing.textContent = '';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Generate';
+            }
+        });
+    </script>
+</body>
+</html>

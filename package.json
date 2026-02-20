@@ -1,0 +1,51 @@
+{
+  "name": "slmnet",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/slmnet.min.js",
+  "module": "src/index.js",
+  "browser": "dist/slmnet.min.js",
+  "unpkg": "dist/slmnet.min.js",
+  "jsdelivr": "dist/slmnet.min.js",
+  "files": [
+    "dist/",
+    "src/",
+    "LICENSE"
+  ],
+  "description": "Lightweight zero-dependency JS inference runtime for neural networks",
+  "author": "Xzdes",
+  "license": "MIT",
+  "keywords": [
+    "neural-network",
+    "inference",
+    "transformer",
+    "browser",
+    "lightweight",
+    "zero-dependency",
+    "machine-learning"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xzdes/slmnet"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w",
+    "dev": "npx serve . -l 3000",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.js\" \"test/**/*.js\"",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.0",
+    "rollup": "^4.9.0",
+    "vitest": "^1.2.0"
+  }
+}

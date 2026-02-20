@@ -32,9 +32,9 @@
         </div>
     </div>
 
-    <script type="module">
-        // Импортируем наш готовый движок
-        import slmnet from './slmnet/slmnet.js';
+    <script src="./dist/slmnet.js"></script>
+    <script>
+        const { default: slmnet } = window.slmnet;
 
         const analyzeBtn = document.getElementById('analyzeBtn');
         const reviewText = document.getElementById('reviewText');
