@@ -69,24 +69,18 @@ const Loader = {
         try {
             const response = await fetch(url, { signal: controller.signal });
             if (!response.ok) {
-                throw new ModelLoadError(
-                    `Failed to load resource: ${response.statusText}`,
-                    { url, status: response.status }
-                );
+                throw new ModelLoadError(`Failed to load resource: ${response.statusText}`, {
+                    url,
+                    status: response.status,
+                });
             }
             return response;
         } catch (err) {
             if (err instanceof ModelLoadError) throw err;
             if (err.name === 'AbortError') {
-                throw new ModelLoadError(
-                    `Request timed out after ${timeoutMs}ms.`,
-                    { url }
-                );
+                throw new ModelLoadError(`Request timed out after ${timeoutMs}ms.`, { url });
             }
-            throw new ModelLoadError(
-                `Network error loading resource: ${err.message}`,
-                { url }
-            );
+            throw new ModelLoadError(`Network error loading resource: ${err.message}`, { url });
         } finally {
             clearTimeout(timeoutId);
         }

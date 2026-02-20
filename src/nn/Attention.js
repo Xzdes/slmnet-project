@@ -4,8 +4,6 @@
  */
 
 import { Tensor } from '../core/Tensor.js';
-import { Ops } from '../core/Ops.js';
-import { Linear } from './Linear.js';
 
 class MultiHeadAttention {
     /**
@@ -63,7 +61,7 @@ class MultiHeadAttention {
             }
 
             const weights = scores.softmax(); // [seqLen, seqLen]
-            const headOut = weights.dot(v);    // [seqLen, headDim]
+            const headOut = weights.dot(v); // [seqLen, headDim]
 
             // Write head output into combined buffer
             for (let i = 0; i < seqLen; i++) {
@@ -84,8 +82,7 @@ class MultiHeadAttention {
         const data = new Float32Array(seqLen * this.headDim);
         for (let i = 0; i < seqLen; i++) {
             for (let j = 0; j < this.headDim; j++) {
-                data[i * this.headDim + j] =
-                    tensor.data[i * embedDim + headIdx * this.headDim + j];
+                data[i * this.headDim + j] = tensor.data[i * embedDim + headIdx * this.headDim + j];
             }
         }
         return new Tensor(data, [seqLen, this.headDim]);

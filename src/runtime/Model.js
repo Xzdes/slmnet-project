@@ -4,7 +4,6 @@
  */
 
 import { Tensor } from '../core/Tensor.js';
-import { Ops } from '../core/Ops.js';
 import { ModelFormat, ARCH_TYPE, TOKENIZER_TYPE } from './ModelFormat.js';
 import { Sampler } from './Sampler.js';
 import { Linear } from '../nn/Linear.js';
@@ -43,10 +42,10 @@ class Model {
 
         const response = await fetch(url);
         if (!response.ok) {
-            throw new ModelLoadError(
-                `Failed to load model: ${response.statusText}`,
-                { url, status: response.status }
-            );
+            throw new ModelLoadError(`Failed to load model: ${response.statusText}`, {
+                url,
+                status: response.status,
+            });
         }
 
         const model = new Model();
@@ -106,7 +105,7 @@ class Model {
         return {
             label: this.labels[maxIdx],
             score: probs.data[maxIdx],
-            scores
+            scores,
         };
     }
 
@@ -123,7 +122,10 @@ class Model {
      * @returns {string}
      * @throws {ValidationError} If no tokenizer or empty prompt.
      */
-    generate(prompt, { maxTokens = 100, temperature = 0.8, topK = 10, topP = 1.0, onToken, shouldStop } = {}) {
+    generate(
+        prompt,
+        { maxTokens = 100, temperature = 0.8, topK = 10, topP = 1.0, onToken, shouldStop } = {}
+    ) {
         if (!this.tokenizer || !this.tokenizer.encode) {
             throw new ValidationError('This model does not have a tokenizer for generation.');
         }
@@ -144,10 +146,9 @@ class Model {
             // Take last blockSize tokens as context
             const currentContext = contextIds.slice(-blockSize);
             // 1D tensor [seqLen] for transformer
-            const contextTensor = new Tensor(
-                new Float32Array(currentContext),
-                [currentContext.length]
-            );
+            const contextTensor = new Tensor(new Float32Array(currentContext), [
+                currentContext.length,
+            ]);
 
             // Forward pass -> [seqLen, vocabSize]
             const logits = this.network.forward(contextTensor);
@@ -311,7 +312,7 @@ class Model {
                 x = outputHead.forward(x);
 
                 return x;
-            }
+            },
         };
     }
 
@@ -319,8 +320,8 @@ class Model {
     _buildMLP(header, weights) {
         const layers = [];
         const layerNames = [...weights.keys()]
-            .filter(k => k.startsWith('layer_'))
-            .map(k => k.replace(/\.(weights|bias)$/, ''))
+            .filter((k) => k.startsWith('layer_'))
+            .map((k) => k.replace(/\.(weights|bias)$/, ''))
             .filter((v, i, a) => a.indexOf(v) === i)
             .sort();
 

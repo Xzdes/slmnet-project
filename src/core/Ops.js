@@ -7,7 +7,6 @@ import { Tensor } from './Tensor.js';
 import { ShapeError } from '../errors.js';
 
 const Ops = {
-
     /**
      * Matrix multiplication of two 2D tensors.
      * @param {Tensor} a - Shape [M, K]
@@ -26,7 +25,11 @@ const Ops = {
         if (a.shape[1] !== b.shape[0]) {
             throw new ShapeError(
                 `Inner dimensions must match for matMul: ${a.shape[1]} !== ${b.shape[0]}.`,
-                { expected: `[${a.shape[0]},K] x [K,${b.shape[1]}]`, actual: `[${a.shape}] x [${b.shape}]`, operation: 'matMul' }
+                {
+                    expected: `[${a.shape[0]},K] x [K,${b.shape[1]}]`,
+                    actual: `[${a.shape}] x [${b.shape}]`,
+                    operation: 'matMul',
+                }
             );
         }
 
@@ -55,8 +58,11 @@ const Ops = {
      */
     add(a, b) {
         // Same shape
-        if (a.size === b.size && a.shape.length === b.shape.length &&
-            a.shape.every((d, i) => d === b.shape[i])) {
+        if (
+            a.size === b.size &&
+            a.shape.length === b.shape.length &&
+            a.shape.every((d, i) => d === b.shape[i])
+        ) {
             const result = new Float32Array(a.size);
             for (let i = 0; i < a.size; i++) {
                 result[i] = a.data[i] + b.data[i];
@@ -67,7 +73,7 @@ const Ops = {
         // Broadcasting: [M, N] + [1, N] or [M, N] + [N]
         if (a.shape.length === 2) {
             const bCols = b.shape[b.shape.length - 1];
-            if (a.shape[1] === bCols && (b.size === bCols)) {
+            if (a.shape[1] === bCols && b.size === bCols) {
                 const [rows, cols] = a.shape;
                 const result = new Float32Array(a.size);
                 for (let i = 0; i < rows; i++) {
@@ -94,8 +100,11 @@ const Ops = {
      */
     mul(a, b) {
         // Same shape
-        if (a.size === b.size && a.shape.length === b.shape.length &&
-            a.shape.every((d, i) => d === b.shape[i])) {
+        if (
+            a.size === b.size &&
+            a.shape.length === b.shape.length &&
+            a.shape.every((d, i) => d === b.shape[i])
+        ) {
             const result = new Float32Array(a.size);
             for (let i = 0; i < a.size; i++) {
                 result[i] = a.data[i] * b.data[i];
@@ -132,7 +141,9 @@ const Ops = {
     transpose(a) {
         if (a.shape.length !== 2) {
             throw new ShapeError('transpose requires a 2D tensor.', {
-                expected: '[M, N]', actual: `[${a.shape}]`, operation: 'transpose',
+                expected: '[M, N]',
+                actual: `[${a.shape}]`,
+                operation: 'transpose',
             });
         }
         const [rows, cols] = a.shape;
@@ -228,7 +239,8 @@ const Ops = {
             }
         } else {
             throw new ShapeError('softmax supports only 1D and 2D tensors.', {
-                actual: `[${a.shape}]`, operation: 'softmax',
+                actual: `[${a.shape}]`,
+                operation: 'softmax',
             });
         }
 
@@ -271,17 +283,33 @@ const Ops = {
         }
 
         return new Tensor(result, x.shape);
-    }
+    },
 };
 
 // Convenience methods on Tensor.prototype
-Tensor.prototype.dot = function (other) { return Ops.matMul(this, other); };
-Tensor.prototype.add = function (other) { return Ops.add(this, other); };
-Tensor.prototype.mul = function (other) { return Ops.mul(this, other); };
-Tensor.prototype.transpose = function () { return Ops.transpose(this); };
-Tensor.prototype.relu = function () { return Ops.relu(this); };
-Tensor.prototype.gelu = function () { return Ops.gelu(this); };
-Tensor.prototype.sigmoid = function () { return Ops.sigmoid(this); };
-Tensor.prototype.softmax = function () { return Ops.softmax(this); };
+Tensor.prototype.dot = function (other) {
+    return Ops.matMul(this, other);
+};
+Tensor.prototype.add = function (other) {
+    return Ops.add(this, other);
+};
+Tensor.prototype.mul = function (other) {
+    return Ops.mul(this, other);
+};
+Tensor.prototype.transpose = function () {
+    return Ops.transpose(this);
+};
+Tensor.prototype.relu = function () {
+    return Ops.relu(this);
+};
+Tensor.prototype.gelu = function () {
+    return Ops.gelu(this);
+};
+Tensor.prototype.sigmoid = function () {
+    return Ops.sigmoid(this);
+};
+Tensor.prototype.softmax = function () {
+    return Ops.softmax(this);
+};
 
 export { Ops };

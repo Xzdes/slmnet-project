@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { SlmnetError, ShapeError, ModelLoadError, ValidationError, PipelineError } from '../src/errors.js';
+import {
+    SlmnetError,
+    ShapeError,
+    ModelLoadError,
+    ValidationError,
+    PipelineError,
+} from '../src/errors.js';
 
 describe('Error classes', () => {
     it('SlmnetError should be an instance of Error', () => {
@@ -31,7 +37,10 @@ describe('Error classes', () => {
     });
 
     it('PipelineError should include step context', () => {
-        const err = new PipelineError('step failed', { stepId: 'l1_report', stepType: 'neural_model' });
+        const err = new PipelineError('step failed', {
+            stepId: 'l1_report',
+            stepType: 'neural_model',
+        });
         expect(err).toBeInstanceOf(SlmnetError);
         expect(err.details.stepId).toBe('l1_report');
         expect(err.message).toContain('l1_report');

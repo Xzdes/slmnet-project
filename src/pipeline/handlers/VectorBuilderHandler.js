@@ -23,19 +23,19 @@ function oneHotEncode(value, categories, stepId) {
 class VectorBuilderHandler {
     async process(step, context) {
         if (!Array.isArray(step.inputs) || step.inputs.length === 0) {
-            throw new PipelineError(
-                "VectorBuilderHandler requires a non-empty 'inputs' array.",
-                { stepId: step.id, stepType: step.type }
-            );
+            throw new PipelineError("VectorBuilderHandler requires a non-empty 'inputs' array.", {
+                stepId: step.id,
+                stepType: step.type,
+            });
         }
 
         let finalVector = [];
         for (const part of step.inputs) {
             if (!part.source) {
-                throw new PipelineError(
-                    "VectorBuilder input part requires a 'source' field.",
-                    { stepId: step.id, stepType: step.type }
-                );
+                throw new PipelineError("VectorBuilder input part requires a 'source' field.", {
+                    stepId: step.id,
+                    stepType: step.type,
+                });
             }
             if (!Array.isArray(part.categories) || part.categories.length === 0) {
                 throw new PipelineError(
@@ -48,7 +48,7 @@ class VectorBuilderHandler {
             if (value === undefined) {
                 throw new PipelineError(
                     `VectorBuilder: context path '${part.source}' resolved to undefined. ` +
-                    `Check that a previous pipeline step produces this value.`,
+                        `Check that a previous pipeline step produces this value.`,
                     { stepId: step.id, stepType: step.type }
                 );
             }

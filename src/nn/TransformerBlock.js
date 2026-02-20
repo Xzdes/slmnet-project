@@ -4,10 +4,6 @@
  * Architecture: x + Attention(LN(x)), then x + FFN(LN(x))
  */
 
-import { MultiHeadAttention } from './Attention.js';
-import { FeedForward } from './FeedForward.js';
-import { LayerNorm } from './LayerNorm.js';
-
 class TransformerBlock {
     /**
      * @param {MultiHeadAttention} attention

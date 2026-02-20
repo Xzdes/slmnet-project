@@ -37,7 +37,7 @@
  *     data:         product(shape)*4  float32[] (or *1 for int8)
  */
 
-const MAGIC = 0x4E4D4C53; // "SLMN" in little-endian
+const MAGIC = 0x4e4d4c53; // "SLMN" in little-endian
 const HEADER_SIZE = 64;
 
 const ARCH_TYPE = { MLP: 0, TRANSFORMER: 1 };
@@ -61,17 +61,17 @@ class ModelFormat {
         }
 
         const header = {
-            version:       view.getUint32(4, true),
-            archType:      view.getUint32(8, true),
-            quantization:  view.getUint32(12, true),
-            vocabSize:     view.getUint32(16, true),
-            embedDim:      view.getUint32(20, true),
-            numHeads:      view.getUint32(24, true),
-            numLayers:     view.getUint32(28, true),
-            blockSize:     view.getUint32(32, true),
-            hiddenDim:     view.getUint32(36, true),
+            version: view.getUint32(4, true),
+            archType: view.getUint32(8, true),
+            quantization: view.getUint32(12, true),
+            vocabSize: view.getUint32(16, true),
+            embedDim: view.getUint32(20, true),
+            numHeads: view.getUint32(24, true),
+            numLayers: view.getUint32(28, true),
+            blockSize: view.getUint32(32, true),
+            hiddenDim: view.getUint32(36, true),
             tokenizerType: view.getUint32(40, true),
-            numLabels:     view.getUint32(44, true),
+            numLabels: view.getUint32(44, true),
         };
         offset = HEADER_SIZE;
 
@@ -169,16 +169,16 @@ class ModelFormat {
         const weightEntries = [...weights.entries()];
         for (const [name, { shape, data }] of weightEntries) {
             const nameBytes = encoder.encode(name);
-            totalSize += 4 + nameBytes.length;       // name
-            totalSize += 4 + shape.length * 4;       // ndims + shape
+            totalSize += 4 + nameBytes.length; // name
+            totalSize += 4 + shape.length * 4; // ndims + shape
             if (isInt8) {
-                totalSize += 4;                      // scale factor
+                totalSize += 4; // scale factor
                 const numElements = data.length || shape.reduce((a, b) => a * b, 1);
-                totalSize += numElements;            // int8 data
+                totalSize += numElements; // int8 data
                 // Align absolute offset to 4 bytes
                 totalSize = (totalSize + 3) & ~3;
             } else {
-                totalSize += data.length * 4;        // float32 data
+                totalSize += data.length * 4; // float32 data
             }
         }
 
@@ -253,13 +253,17 @@ class ModelFormat {
                 for (let i = 0; i < floatData.length; i++) {
                     int8Data[i] = Math.round(Math.max(-127, Math.min(127, floatData[i] / scale)));
                 }
-                new Uint8Array(buffer, offset, int8Data.length).set(new Uint8Array(int8Data.buffer));
+                new Uint8Array(buffer, offset, int8Data.length).set(
+                    new Uint8Array(int8Data.buffer)
+                );
                 offset += int8Data.length;
 
                 // Align absolute offset to 4 bytes
                 offset = (offset + 3) & ~3;
             } else {
-                new Uint8Array(buffer, offset, floatData.byteLength).set(new Uint8Array(floatData.buffer));
+                new Uint8Array(buffer, offset, floatData.byteLength).set(
+                    new Uint8Array(floatData.buffer)
+                );
                 offset += floatData.byteLength;
             }
         }

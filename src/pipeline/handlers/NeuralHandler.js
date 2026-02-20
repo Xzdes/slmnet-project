@@ -30,10 +30,10 @@ async function getModel(modelUrl) {
 class NeuralHandler {
     async process(step, context) {
         if (!step.model_url || !step.input) {
-            throw new PipelineError(
-                "NeuralHandler requires 'model_url' and 'input'.",
-                { stepId: step.id, stepType: step.type }
-            );
+            throw new PipelineError("NeuralHandler requires 'model_url' and 'input'.", {
+                stepId: step.id,
+                stepType: step.type,
+            });
         }
 
         const model = await getModel(step.model_url);
@@ -62,7 +62,7 @@ class NeuralHandler {
                     if (slice.length !== spec.length) {
                         throw new PipelineError(
                             `NeuralHandler: expected ${spec.length} output values for '${key}' at offset ${offset}, ` +
-                            `but prediction only has ${rawOutput.length} total values.`,
+                                `but prediction only has ${rawOutput.length} total values.`,
                             { stepId: step.id, stepType: step.type }
                         );
                     }

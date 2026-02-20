@@ -27,17 +27,32 @@ describe('Ops', () => {
 
     describe('add', () => {
         it('should add same-shape tensors', () => {
-            const a = Tensor.from([[1, 2], [3, 4]]);
-            const b = Tensor.from([[5, 6], [7, 8]]);
+            const a = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
+            const b = Tensor.from([
+                [5, 6],
+                [7, 8],
+            ]);
             const c = Ops.add(a, b);
-            expect(c.toArray()).toEqual([[6, 8], [10, 12]]);
+            expect(c.toArray()).toEqual([
+                [6, 8],
+                [10, 12],
+            ]);
         });
 
         it('should broadcast [M,N] + [N]', () => {
-            const a = Tensor.from([[1, 2], [3, 4]]);
+            const a = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
             const b = new Tensor(new Float32Array([10, 20]), [2]);
             const c = Ops.add(a, b);
-            expect(c.toArray()).toEqual([[11, 22], [13, 24]]);
+            expect(c.toArray()).toEqual([
+                [11, 22],
+                [13, 24],
+            ]);
         });
 
         it('should throw on incompatible shapes', () => {
@@ -49,26 +64,48 @@ describe('Ops', () => {
 
     describe('mul', () => {
         it('should multiply same-shape tensors', () => {
-            const a = Tensor.from([[1, 2], [3, 4]]);
-            const b = Tensor.from([[2, 3], [4, 5]]);
+            const a = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
+            const b = Tensor.from([
+                [2, 3],
+                [4, 5],
+            ]);
             const c = Ops.mul(a, b);
-            expect(c.toArray()).toEqual([[2, 6], [12, 20]]);
+            expect(c.toArray()).toEqual([
+                [2, 6],
+                [12, 20],
+            ]);
         });
 
         it('should broadcast scalar', () => {
-            const a = Tensor.from([[1, 2], [3, 4]]);
+            const a = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
             const s = new Tensor(new Float32Array([3]), [1]);
             const c = Ops.mul(a, s);
-            expect(c.toArray()).toEqual([[3, 6], [9, 12]]);
+            expect(c.toArray()).toEqual([
+                [3, 6],
+                [9, 12],
+            ]);
         });
     });
 
     describe('transpose', () => {
         it('should transpose [2,3] to [3,2]', () => {
-            const a = Tensor.from([[1, 2, 3], [4, 5, 6]]);
+            const a = Tensor.from([
+                [1, 2, 3],
+                [4, 5, 6],
+            ]);
             const t = Ops.transpose(a);
             expect(t.shape).toEqual([3, 2]);
-            expect(t.toArray()).toEqual([[1, 4], [2, 5], [3, 6]]);
+            expect(t.toArray()).toEqual([
+                [1, 4],
+                [2, 5],
+                [3, 6],
+            ]);
         });
     });
 
@@ -88,7 +125,10 @@ describe('Ops', () => {
         });
 
         it('should handle 2D row-wise softmax', () => {
-            const t = Tensor.from([[1, 2], [3, 4]]);
+            const t = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
             const s = Ops.softmax(t);
             // Each row should sum to 1
             const row0 = s.data[0] + s.data[1];
@@ -131,14 +171,26 @@ describe('Ops', () => {
 
     describe('chaining on Tensor.prototype', () => {
         it('should support method chaining', () => {
-            const a = Tensor.from([[1, -1], [2, -2]]);
+            const a = Tensor.from([
+                [1, -1],
+                [2, -2],
+            ]);
             const result = a.relu();
-            expect(result.toArray()).toEqual([[1, 0], [2, 0]]);
+            expect(result.toArray()).toEqual([
+                [1, 0],
+                [2, 0],
+            ]);
         });
 
         it('should support dot chaining', () => {
-            const a = Tensor.from([[1, 2], [3, 4]]);
-            const b = Tensor.from([[5, 6], [7, 8]]);
+            const a = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
+            const b = Tensor.from([
+                [5, 6],
+                [7, 8],
+            ]);
             const c = a.dot(b);
             expect(c.shape).toEqual([2, 2]);
         });

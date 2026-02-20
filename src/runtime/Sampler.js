@@ -3,9 +3,6 @@
  * @description Sampling strategies for text generation: Top-K, Top-P, temperature.
  */
 
-import { Ops } from '../core/Ops.js';
-import { Tensor } from '../core/Tensor.js';
-
 class Sampler {
     /**
      * Sample a token ID from logits using temperature, Top-K, and Top-P.

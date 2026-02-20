@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { ModelFormat, ARCH_TYPE, QUANT_TYPE, TOKENIZER_TYPE } from '../../src/runtime/ModelFormat.js';
+import {
+    ModelFormat,
+    ARCH_TYPE,
+    QUANT_TYPE,
+    TOKENIZER_TYPE,
+} from '../../src/runtime/ModelFormat.js';
 
 describe('ModelFormat', () => {
     function makeTestModel(quantization = QUANT_TYPE.FLOAT32) {

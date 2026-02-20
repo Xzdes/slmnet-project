@@ -34,7 +34,10 @@ describe('Linear', () => {
         const w = new Float32Array([1, 0, 0, 1]);
         const layer = new Linear(w, null, 2, 2);
 
-        const x = Tensor.from([[1, 2], [3, 4]]);
+        const x = Tensor.from([
+            [1, 2],
+            [3, 4],
+        ]);
         const out = layer.forward(x);
         expect(out.shape).toEqual([2, 2]);
     });

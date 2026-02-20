@@ -3,7 +3,10 @@ import { BPETokenizer } from '../../src/tokenizer/BPETokenizer.js';
 
 describe('BPETokenizer', () => {
     const vocab = { a: 0, b: 1, c: 2, ab: 3, abc: 4, ' ': 5 };
-    const merges = [['a', 'b'], ['ab', 'c']]; // a+b -> ab, ab+c -> abc
+    const merges = [
+        ['a', 'b'],
+        ['ab', 'c'],
+    ]; // a+b -> ab, ab+c -> abc
 
     describe('encode', () => {
         it('should apply BPE merges', () => {

@@ -27,10 +27,11 @@ class Embedding {
      */
     forward(ids) {
         if (ids.shape.length !== 1) {
-            throw new ShapeError(
-                'Embedding.forward expects a 1D tensor of token IDs.',
-                { expected: 'seqLen', actual: `${ids.shape}`, operation: 'Embedding.forward' }
-            );
+            throw new ShapeError('Embedding.forward expects a 1D tensor of token IDs.', {
+                expected: 'seqLen',
+                actual: `${ids.shape}`,
+                operation: 'Embedding.forward',
+            });
         }
 
         const seqLen = ids.shape[0];

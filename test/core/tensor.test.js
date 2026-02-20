@@ -14,7 +14,11 @@ describe('Tensor', () => {
         });
 
         it('should infer shape from nested array', () => {
-            const t = new Tensor([[1, 2], [3, 4], [5, 6]]);
+            const t = new Tensor([
+                [1, 2],
+                [3, 4],
+                [5, 6],
+            ]);
             expect(t.shape).toEqual([3, 2]);
             expect(t.size).toBe(6);
         });
@@ -35,16 +39,19 @@ describe('Tensor', () => {
         it('zeros creates zero-filled tensor', () => {
             const t = Tensor.zeros([3, 4]);
             expect(t.shape).toEqual([3, 4]);
-            expect(t.data.every(v => v === 0)).toBe(true);
+            expect(t.data.every((v) => v === 0)).toBe(true);
         });
 
         it('ones creates ones-filled tensor', () => {
             const t = Tensor.ones([2, 2]);
-            expect(t.data.every(v => v === 1)).toBe(true);
+            expect(t.data.every((v) => v === 1)).toBe(true);
         });
 
         it('from creates from nested array', () => {
-            const t = Tensor.from([[1, 2], [3, 4]]);
+            const t = Tensor.from([
+                [1, 2],
+                [3, 4],
+            ]);
             expect(t.shape).toEqual([2, 2]);
             expect(Array.from(t.data)).toEqual([1, 2, 3, 4]);
         });
@@ -67,7 +74,10 @@ describe('Tensor', () => {
     describe('toArray', () => {
         it('should convert 2D tensor to nested array', () => {
             const t = new Tensor(new Float32Array([1, 2, 3, 4]), [2, 2]);
-            expect(t.toArray()).toEqual([[1, 2], [3, 4]]);
+            expect(t.toArray()).toEqual([
+                [1, 2],
+                [3, 4],
+            ]);
         });
 
         it('should convert 1D tensor to flat array', () => {
@@ -77,7 +87,16 @@ describe('Tensor', () => {
 
         it('should handle 3D tensors', () => {
             const t = new Tensor(new Float32Array([1, 2, 3, 4, 5, 6, 7, 8]), [2, 2, 2]);
-            expect(t.toArray()).toEqual([[[1, 2], [3, 4]], [[5, 6], [7, 8]]]);
+            expect(t.toArray()).toEqual([
+                [
+                    [1, 2],
+                    [3, 4],
+                ],
+                [
+                    [5, 6],
+                    [7, 8],
+                ],
+            ]);
         });
     });
 });

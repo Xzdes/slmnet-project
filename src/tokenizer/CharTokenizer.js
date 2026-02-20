@@ -18,7 +18,7 @@ class CharTokenizer {
             this.charToId.set(ch, i);
             this.idToChar.set(i, ch);
         });
-        this.unkId = unkToken !== null ? this.charToId.get(unkToken) ?? null : null;
+        this.unkId = unkToken !== null ? (this.charToId.get(unkToken) ?? null) : null;
     }
 
     /**

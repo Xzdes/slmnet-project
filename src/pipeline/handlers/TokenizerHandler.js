@@ -50,10 +50,10 @@ function textToBoW(text, vocabMap, vectorSize) {
 class TokenizerHandler {
     async process(step, context) {
         if (!step.vocab_url || !step.output_size) {
-            throw new PipelineError(
-                `TokenizerHandler requires 'vocab_url' and 'output_size'.`,
-                { stepId: step.id, stepType: step.type }
-            );
+            throw new PipelineError(`TokenizerHandler requires 'vocab_url' and 'output_size'.`, {
+                stepId: step.id,
+                stepType: step.type,
+            });
         }
         const inputText = getValueFromContext(context, step.input);
         if (typeof inputText !== 'string') {

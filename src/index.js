@@ -22,7 +22,13 @@ import { Sampler } from './runtime/Sampler.js';
 import { ModelFormat, ARCH_TYPE, QUANT_TYPE, TOKENIZER_TYPE } from './runtime/ModelFormat.js';
 import { Loader } from './Loader.js';
 import { executePipeline } from './pipeline/Executor.js';
-import { SlmnetError, ShapeError, ModelLoadError, ValidationError, PipelineError } from './errors.js';
+import {
+    SlmnetError,
+    ShapeError,
+    ModelLoadError,
+    ValidationError,
+    PipelineError,
+} from './errors.js';
 
 const slmnet = {
     /** High-level model class: load, classify, generate. */
@@ -72,10 +78,9 @@ const slmnet = {
         } else if (typeof pipelineSource === 'object' && pipelineSource !== null) {
             config = pipelineSource;
         } else {
-            throw new ValidationError(
-                'Pipeline source must be a URL string or a config object.',
-                { received: typeof pipelineSource }
-            );
+            throw new ValidationError('Pipeline source must be a URL string or a config object.', {
+                received: typeof pipelineSource,
+            });
         }
         return executePipeline(config, input, options);
     },

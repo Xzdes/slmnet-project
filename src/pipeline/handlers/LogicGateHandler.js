@@ -16,13 +16,20 @@ function evaluateRule(value, rule) {
         throw new Error(`Invalid number in rule: "${rule}".`);
     }
     switch (operator) {
-        case '>':   return value > target;
-        case '>=':  return value >= target;
-        case '<':   return value < target;
-        case '<=':  return value <= target;
-        case '==':  return value === target;
-        case '===': return value === target;
-        default:    throw new Error(`Unknown operator: "${operator}".`);
+        case '>':
+            return value > target;
+        case '>=':
+            return value >= target;
+        case '<':
+            return value < target;
+        case '<=':
+            return value <= target;
+        case '==':
+            return value === target;
+        case '===':
+            return value === target;
+        default:
+            throw new Error(`Unknown operator: "${operator}".`);
     }
 }
 
@@ -56,7 +63,9 @@ class LogicGateHandler {
             if (defaultResult !== null) {
                 result = defaultResult;
             } else {
-                throw new Error(`Step '${step.id}': no rule matched value ${inputValue} and no default set.`);
+                throw new Error(
+                    `Step '${step.id}': no rule matched value ${inputValue} and no default set.`
+                );
             }
         }
 

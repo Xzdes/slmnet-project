@@ -33,7 +33,17 @@ describe('executePipeline', () => {
         };
         // logic_gate operates on a value, not text. Let's set raw input to a number.
         const result = await executePipeline(
-            { input_field: 'val', pipeline: [{ id: 's1', type: 'logic_gate', input: 'val', rules: { low: '< 0.5', high: 'default' } }] },
+            {
+                input_field: 'val',
+                pipeline: [
+                    {
+                        id: 's1',
+                        type: 'logic_gate',
+                        input: 'val',
+                        rules: { low: '< 0.5', high: 'default' },
+                    },
+                ],
+            },
             0.3,
             { onProgress: (p) => progressValues.push(p) }
         );

@@ -72,7 +72,8 @@ export async function executePipeline(pipelineConfig, rawInput, options = {}) {
             );
         }
 
-        if (onStepComplete) onStepComplete({ step, index: i, total: totalSteps, result: context[step.id] });
+        if (onStepComplete)
+            onStepComplete({ step, index: i, total: totalSteps, result: context[step.id] });
         if (onProgress) onProgress((i + 1) / totalSteps);
     }
 

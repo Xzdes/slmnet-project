@@ -10,7 +10,7 @@ describe('MLP', () => {
                 architecture: { input: 3, hidden: 2, output: 1 },
                 weights: {
                     ih: [1, 0, 0, 0, 1, 0], // [hidden=2, input=3]
-                    ho: [1, 1],              // [output=1, hidden=2]
+                    ho: [1, 1], // [output=1, hidden=2]
                     bh: [0, 0],
                     bo: [0],
                 },

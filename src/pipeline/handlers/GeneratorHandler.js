@@ -19,10 +19,10 @@ async function getGeneratorModel(modelUrl) {
 class GeneratorHandler {
     async process(step, context) {
         if (!step.model_url || !step.input) {
-            throw new PipelineError(
-                "GeneratorHandler requires 'model_url' and 'input'.",
-                { stepId: step.id, stepType: step.type }
-            );
+            throw new PipelineError("GeneratorHandler requires 'model_url' and 'input'.", {
+                stepId: step.id,
+                stepType: step.type,
+            });
         }
 
         const model = await getGeneratorModel(step.model_url);

@@ -6,13 +6,7 @@ describe('Embedding', () => {
     const vocabSize = 5;
     const embedDim = 3;
     // Simple weight: each token i maps to [i, i, i]
-    const weights = new Float32Array([
-        0, 0, 0,
-        1, 1, 1,
-        2, 2, 2,
-        3, 3, 3,
-        4, 4, 4,
-    ]);
+    const weights = new Float32Array([0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4]);
 
     it('should look up embeddings for 1D input', () => {
         const emb = new Embedding(weights, vocabSize, embedDim);

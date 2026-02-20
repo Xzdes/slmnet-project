@@ -4,7 +4,6 @@
  */
 
 import { Tensor } from '../core/Tensor.js';
-import { Ops } from '../core/Ops.js';
 
 class Linear {
     /**

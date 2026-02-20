@@ -90,12 +90,14 @@ class Tensor {
         return build(this.shape, 0);
     }
 
+    /* eslint-disable no-console */
     print() {
         console.log('Tensor {');
         console.log('  shape:', this.shape);
         console.log('  data:', this.toArray());
         console.log('}');
     }
+    /* eslint-enable no-console */
 
     /** @private */
     static _inferShapeAndFlatten(arr) {
@@ -109,7 +111,9 @@ class Tensor {
                 const firstLen = currentLevel[0].length;
                 for (let i = 1; i < currentLevel.length; i++) {
                     if (!Array.isArray(currentLevel[i]) || currentLevel[i].length !== firstLen) {
-                        throw new Error('Nested arrays have different lengths. Cannot create tensor.');
+                        throw new Error(
+                            'Nested arrays have different lengths. Cannot create tensor.'
+                        );
                     }
                 }
             }

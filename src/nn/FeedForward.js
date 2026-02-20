@@ -4,8 +4,6 @@
  * Architecture: Linear → GELU → Linear
  */
 
-import { Linear } from './Linear.js';
-
 class FeedForward {
     /**
      * @param {Linear} linear1 - [embedDim, hiddenDim]

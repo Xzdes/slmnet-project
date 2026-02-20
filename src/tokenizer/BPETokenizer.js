@@ -16,7 +16,7 @@ class BPETokenizer {
         this.tokenToId.forEach((id, token) => this.idToToken.set(id, token));
         this.vocabSize = this.tokenToId.size;
         this.merges = merges;
-        this.unkId = unkToken !== null ? this.tokenToId.get(unkToken) ?? null : null;
+        this.unkId = unkToken !== null ? (this.tokenToId.get(unkToken) ?? null) : null;
 
         // Build merge lookup for fast pair matching
         this.mergeRanks = new Map();
@@ -68,11 +68,7 @@ class BPETokenizer {
                 if (bestPair === null) break;
 
                 const merged = symbols[bestPair] + symbols[bestPair + 1];
-                symbols = [
-                    ...symbols.slice(0, bestPair),
-                    merged,
-                    ...symbols.slice(bestPair + 2),
-                ];
+                symbols = [...symbols.slice(0, bestPair), merged, ...symbols.slice(bestPair + 2)];
             }
 
             // Convert symbols to IDs

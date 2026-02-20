@@ -4,7 +4,6 @@
  * Compatible with slmnet-project legacy model format.
  */
 
-import { Tensor } from '../core/Tensor.js';
 import { Ops } from '../core/Ops.js';
 import { Linear } from './Linear.js';
 
@@ -12,7 +11,7 @@ const ACTIVATIONS = {
     relu: Ops.relu,
     gelu: Ops.gelu,
     sigmoid: Ops.sigmoid,
-    none: (x) => x
+    none: (x) => x,
 };
 
 class MLP {
@@ -54,13 +53,23 @@ class MLP {
 
         const layers = [
             {
-                linear: new Linear(ihTransposed, new Float32Array(weights.bh), arch.input, arch.hidden),
-                activation: 'sigmoid'
+                linear: new Linear(
+                    ihTransposed,
+                    new Float32Array(weights.bh),
+                    arch.input,
+                    arch.hidden
+                ),
+                activation: 'sigmoid',
             },
             {
-                linear: new Linear(hoTransposed, new Float32Array(weights.bo), arch.hidden, arch.output),
-                activation: 'sigmoid'
-            }
+                linear: new Linear(
+                    hoTransposed,
+                    new Float32Array(weights.bo),
+                    arch.hidden,
+                    arch.output
+                ),
+                activation: 'sigmoid',
+            },
         ];
 
         return new MLP(layers);
