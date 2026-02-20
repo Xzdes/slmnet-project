@@ -4,6 +4,7 @@
  */
 
 import { Tensor } from '../core/Tensor.js';
+import { ValidationError } from '../errors.js';
 
 class MultiHeadAttention {
     /**
@@ -15,6 +16,12 @@ class MultiHeadAttention {
      * @param {number} headDim - embedDim / numHeads
      */
     constructor(wq, wk, wv, wo, numHeads, headDim) {
+        if (headDim * numHeads !== wq.weights.shape[1]) {
+            throw new ValidationError(
+                `embedDim (${wq.weights.shape[1]}) must be divisible by numHeads (${numHeads}).`,
+                { embedDim: wq.weights.shape[1], numHeads, headDim }
+            );
+        }
         this.wq = wq;
         this.wk = wk;
         this.wv = wv;
@@ -53,7 +60,7 @@ class MultiHeadAttention {
                 for (let j = 0; j < seqLen; j++) {
                     const idx = i * seqLen + j;
                     if (j > i) {
-                        scores.data[idx] = -Infinity;
+                        scores.data[idx] = -1e9;
                     } else {
                         scores.data[idx] *= this.scale;
                     }

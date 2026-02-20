@@ -47,8 +47,7 @@ class LogicGateHandler {
         let result = null;
         let defaultResult = null;
 
-        for (const key in step.rules) {
-            const rule = step.rules[key];
+        for (const [key, rule] of Object.entries(step.rules)) {
             if (rule === 'default') {
                 defaultResult = key;
                 continue;

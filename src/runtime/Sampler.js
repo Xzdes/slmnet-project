@@ -37,6 +37,8 @@ class Sampler {
             candidates = indexed.slice(0, topK);
         }
 
+        if (candidates.length === 0) return 0;
+
         // 4. Compute softmax on candidates
         const maxVal = candidates[0].val;
         let sumExp = 0;

@@ -38,8 +38,9 @@ class Embedding {
         const result = new Float32Array(seqLen * this.embeddingDim);
 
         for (let i = 0; i < seqLen; i++) {
-            const id = Math.round(ids.data[i]);
-            if (id < 0 || id >= this.vocabSize) {
+            const rawId = Math.round(ids.data[i]);
+            const id = Math.max(0, Math.min(this.vocabSize - 1, rawId));
+            if (rawId < 0 || rawId >= this.vocabSize) {
                 throw new ValidationError(
                     `Token ID ${id} is out of range [0, ${this.vocabSize - 1}].`,
                     { tokenIndex: i, tokenId: id, vocabSize: this.vocabSize }

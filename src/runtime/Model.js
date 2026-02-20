@@ -130,7 +130,7 @@ class Model {
             throw new ValidationError('This model does not have a tokenizer for generation.');
         }
 
-        const blockSize = this.header.blockSize || 64;
+        const blockSize = this.header.blockSize ?? 64;
         const promptIds = this.tokenizer.encode(prompt);
 
         if (promptIds.length === 0) {

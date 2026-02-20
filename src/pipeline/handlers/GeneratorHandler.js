@@ -36,10 +36,10 @@ class GeneratorHandler {
         }
 
         return model.generate(prompt, {
-            maxTokens: step.max_tokens || 100,
-            temperature: step.temperature || 0.8,
-            topK: step.top_k || 10,
-            topP: step.top_p || 1.0,
+            maxTokens: step.max_tokens ?? 100,
+            temperature: step.temperature ?? 0.8,
+            topK: step.top_k ?? 10,
+            topP: step.top_p ?? 1.0,
         });
     }
 }
